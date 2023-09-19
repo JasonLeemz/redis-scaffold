@@ -25,7 +25,7 @@ func (it *Iterator) Next() interface{} {
 	return ret
 }
 
-type IteratorImpl interface {
+type IteratorInterface interface {
 	HasNext() bool
 	Next() interface{}
 }
@@ -49,7 +49,7 @@ func newIterator(data []interface{}) *Iterator {
 	}
 }
 
-type SliceResultImpl interface {
+type SliceResultInterface interface {
 	Unwrap() []interface{}
 	Iterator() *Iterator
 }

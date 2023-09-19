@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"github.com/JasonLeemz/redis-scaffold/gedis"
 	"testing"
+	"time"
 )
 
-func TestStringOperation(t *testing.T) {
+func TestGet(t *testing.T) {
 	ctx := context.Background()
 	k1 := "cache:equip:召唤师峡谷:0:1001"
 	k2 := "cache:equip:召唤师峡谷:0:1002"
@@ -28,4 +29,15 @@ func TestStringOperation(t *testing.T) {
 	//
 	//ret3 := gedis.NewStringOperation(ctx).MGet(k1, k2, k3, k4).Unwrap()
 	//fmt.Println(ret3)
+}
+
+func TestSet(t *testing.T) {
+	ctx := context.Background()
+	ret := gedis.NewStringOperation(ctx).Set(
+		"name",
+		"limingze",
+		gedis.WithExpire(time.Second*30),
+		gedis.WithNX(),
+	).Unwrap()
+	fmt.Println(ret)
 }

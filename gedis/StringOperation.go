@@ -2,9 +2,10 @@ package gedis
 
 import (
 	"context"
+	"time"
 )
 
-type StringOperationImpl interface {
+type StringOperationInterface interface {
 	Get(key string) *StringResult
 	MGet(key ...string) *SliceResult
 	Set()
@@ -28,7 +29,16 @@ func (o *StringOperation) MGet(keys ...string) *SliceResult {
 	return NewSliceResult(Redis().MGet(o.ctx, keys...).Result())
 }
 
-func (o *StringOperation) Set() {
-	//TODO implement me
-	panic("implement me")
+func (o *StringOperation) Set(key string, value interface{}, attrs ...*OperationAttr) *InterfaceResult {
+	exp := OperationAttrs(attrs).Find(AttrExpire)
+	if exp == nil {
+		exp = time.Duration(0)
+	}
+
+	nx := OperationAttrs(attrs).Find(AttrNX)
+	if nx != nil {
+		return NewInterfaceResult(Redis().SetNX(o.ctx, key, value, exp.(time.Duration)).Result())
+	} else {
+		return NewInterfaceResult(Redis().Set(o.ctx, key, value, exp.(time.Duration)).Result())
+	}
 }

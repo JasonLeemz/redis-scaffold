@@ -26,7 +26,7 @@ func (r *StringResult) Unwrap_OR(defaultValue string) string {
 	return r.Result
 }
 
-type StringResultImpl interface {
+type StringResultInterface interface {
 	Unwrap() string
 	Unwrap_OR(defaultValue string) string
 }
